@@ -26,5 +26,5 @@
 - User.test.js
 
 ### Run tests
-npm install
-npm test
+1. npm install
+2. npm test
