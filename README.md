@@ -12,6 +12,18 @@
 - MealEntry.js
 - Session.js
 - User.js
+- AuthService.js
+- CalendarService.js
+
+### Test Files
+- AuthService.test.js
+- CalendarService.test.js
+- Calendar.test.js
+- Week.test.js
+- Meal.test.js
+- MealEntry.test.js
+- Session.test.js
+- User.test.js
 
 ### Run tests
 npm install
