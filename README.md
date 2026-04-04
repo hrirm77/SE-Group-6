@@ -13,9 +13,6 @@
 - Session.js
 - User.js
 
-### Testing
-This project uses Jest for automated tests.
-
 ### Run tests
 npm install
 npm test
