@@ -5,6 +5,12 @@
 - Test Framework: Jest
 - Runtime: Node.js
 
+### Implemented Use Cases
+- UC5: Login
+- UC9: Logout
+- UC3: Opening Calendar
+- UC10: Add Meal to Calendar
+
 ### Files
 - Calendar.js
 - Week.js
