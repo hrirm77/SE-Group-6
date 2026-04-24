@@ -94,6 +94,39 @@ class CalendarService {
       throw error;
     }
   }
+ 
+  removeMealFromCalendar(calendarId, entryId) {
+    if (calendarId === '' || calendarId === null || calendarId === undefined) {
+      return { success: false, message: 'Calendar ID is required' };
+    }
+
+    if (entryId === '' || entryId === null || entryId === undefined) {
+      return { success: false, message: 'Meal entry ID is required' };
+    }
+
+    const calendar = this._calendars.find(
+      (c) => c.getCalendarId() === Number(calendarId)
+    );
+
+    if (!calendar) {
+      return { success: false, message: 'Calendar not found' };
+    }
+
+    try {
+      calendar.removeMealEntry(Number(entryId));
+
+      return {
+        success: true,
+        message: 'Meal entry removed successfully'
+      };
+    } catch (error) {
+      if (error.message.startsWith('removeMealEntry: no entry found')) {
+        return { success: false, message: 'Meal entry not found' };
+      }
+
+      throw error;
+    }
+  }
 
   editMealInCalendar(calendarId, entryId, updatedEntry) {
     if (updatedEntry === null || updatedEntry === undefined) {
