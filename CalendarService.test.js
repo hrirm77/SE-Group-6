@@ -1,7 +1,7 @@
 /**
  * CalendarService Test Suite
  * Unit tests for validating the functionality of CalendarService.
- * UC3 + UC12
+ * UC3 + UC12 + UC11
  * @author Hrithik + WeiSen + Elyas
  */
 import CalendarService from './CalendarService.js';

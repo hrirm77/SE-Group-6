@@ -1,3 +1,10 @@
+
+/**
+ * Calendar Model Test Suite
+ * Unit tests for validating the functionality of the Calendar model.
+ * UC3 + UC12 + UC11
+ * @author Hrithik + WeiSen + Elyas
+ */
 import Calendar from './Calendar.js';
 import Week from './Week.js';
 import MealEntry from './MealEntry.js';

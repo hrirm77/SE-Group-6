@@ -3,6 +3,8 @@
  * Top-level container for all of a user's weekly meal plans.
  * UC3 (Open Calendar), UC10 (Add Meal to Calendar)
  * @author Michael + Advaith
+ * UC12 (Edit Meal in Calendar), UC11 (Remove Meal from Calendar)
+ * @author Hrithik + WeiSen + Elyas
  */
 import Week from './Week.js';
 import MealEntry from './MealEntry.js';
