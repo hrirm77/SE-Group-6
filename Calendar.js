@@ -69,6 +69,23 @@ class Calendar {
 
     throw new Error(`removeMealEntry: no entry found with id ${entryId}`);
   }
+
+  editMealEntry(entryId, entry) {
+    for (const week of this._weeks) {
+      try {
+        week.editMeal(entryId, entry);
+        return;
+      } catch (error) {
+        if (error.message.startsWith('editMeal: no entry found')) {
+          // entry not in this week — keep looking
+          continue;
+        }
+        throw error;
+      }
+    }
+
+    throw new Error(`editMealEntry: no entry found with id ${entryId}`);
+  }
 }
 
 export default Calendar;

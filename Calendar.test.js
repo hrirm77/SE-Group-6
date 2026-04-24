@@ -84,3 +84,32 @@ describe('UC3 and UC10: Calendar model tests', () => {
     }).toThrow('removeMealEntry: no entry found with id 999');
   });
 });
+
+describe('UC11: Calendar editMealEntry tests', () => {
+  let calendar;
+
+  beforeEach(() => {
+    const breakfast = new MealEntry(1, 10, 'breakfast', 'Monday');
+    const week15 = new Week(15, [breakfast]);
+    calendar = new Calendar(100, [week15]);
+  });
+
+  test('editMealEntry updates an existing entry', () => {
+    const updated = new MealEntry(1, 99, 'lunch', 'Tuesday');
+
+    calendar.editMealEntry(1, updated);
+
+    const entry = calendar.getWeek(15).getMealEntries()[0];
+    expect(entry.getMealId()).toBe(99);
+    expect(entry.getMealType()).toBe('lunch');
+    expect(entry.getDay()).toBe('Tuesday');
+  });
+
+  test('editMealEntry throws when entry id does not exist', () => {
+    const updated = new MealEntry(1, 10, 'breakfast', 'Monday');
+
+    expect(() => {
+      calendar.editMealEntry(999, updated);
+    }).toThrow('editMealEntry: no entry found with id 999');
+  });
+});

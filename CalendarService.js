@@ -94,6 +94,39 @@ class CalendarService {
       throw error;
     }
   }
+
+  editMealInCalendar(calendarId, entryId, updatedEntry) {
+    if (updatedEntry === null || updatedEntry === undefined) {
+      return { success: false, message: 'Meal entry is required' };
+    }
+
+    if (!(updatedEntry instanceof MealEntry)) {
+      throw new Error('Argument must be a MealEntry instance');
+    }
+
+    const calendar = this._calendars.find(
+      (c) => c.getCalendarId() === Number(calendarId)
+    );
+
+    if (!calendar) {
+      return { success: false, message: 'Calendar not found' };
+    }
+
+    if (!this._validMealIds.includes(updatedEntry.getMealId())) {
+      return { success: false, message: 'Meal not found in the system' };
+    }
+
+    try {
+      calendar.editMealEntry(entryId, updatedEntry);
+      return { success: true, message: 'Meal entry updated successfully' };
+    } catch (error) {
+      if (error.message.startsWith('editMealEntry: no entry found')) {
+        return { success: false, message: 'Meal entry not found' };
+      }
+      throw error;
+    }
+  }
+
 }
 
 export default CalendarService;

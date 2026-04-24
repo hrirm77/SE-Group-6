@@ -13,11 +13,11 @@ class Week {
    * @param {MealEntry[]} mealEntries
    */
   constructor(weekNumber, mealEntries = []) {
-    this._weekNumber  = weekNumber;
+    this._weekNumber = weekNumber;
     this._mealEntries = mealEntries;
   }
 
-  getWeekNumber()  { return this._weekNumber; }
+  getWeekNumber() { return this._weekNumber; }
   getMealEntries() { return this._mealEntries; }
 
   /**
@@ -57,6 +57,22 @@ class Week {
     }
 
     this._mealEntries.splice(index, 1);
+  }
+
+  editMeal(entryId, updatedEntry) {
+    if (!(updatedEntry instanceof MealEntry)) {
+      throw new Error('editMeal: argument must be a MealEntry instance');
+    }
+
+    const index = this._mealEntries.findIndex(
+      (m) => m.getEntryId() === entryId
+    );
+
+    if (index === -1) {
+      throw new Error(`editMeal: no entry found with id ${entryId}`);
+    }
+
+    this._mealEntries[index] = updatedEntry;
   }
 }
 

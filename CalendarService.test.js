@@ -126,3 +126,60 @@ describe('CalendarService tests', () => {
     expect(result.message).toBe('Invalid week number format');
   });
 });
+
+describe('UC11: CalendarService editMealInCalendar tests', () => {
+  let calendarService;
+
+  beforeEach(() => {
+    const breakfast = new MealEntry(1, 10, 'breakfast', 'Monday');
+    const week15 = new Week(15, [breakfast]);
+    const calendar = new Calendar(100, [week15]);
+
+    calendarService = new CalendarService([calendar], [10, 11, 12, 13, 14]);
+  });
+
+  test('edit meal success', () => {
+    const updated = new MealEntry(1, 12, 'lunch', 'Tuesday');
+    const result = calendarService.editMealInCalendar(100, 1, updated);
+
+    expect(result.success).toBe(true);
+    expect(result.message).toBe('Meal entry updated successfully');
+  });
+
+  test('null meal entry', () => {
+    const result = calendarService.editMealInCalendar(100, 1, null);
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe('Meal entry is required');
+  });
+
+  test('wrong meal entry type throws', () => {
+    expect(() => {
+      calendarService.editMealInCalendar(100, 1, 'not a MealEntry');
+    }).toThrow('Argument must be a MealEntry instance');
+  });
+
+  test('calendar not found', () => {
+    const updated = new MealEntry(1, 10, 'breakfast', 'Monday');
+    const result = calendarService.editMealInCalendar(999, 1, updated);
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe('Calendar not found');
+  });
+
+  test('meal not found in system', () => {
+    const updated = new MealEntry(1, 999, 'breakfast', 'Monday');
+    const result = calendarService.editMealInCalendar(100, 1, updated);
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe('Meal not found in the system');
+  });
+
+  test('meal entry not found', () => {
+    const updated = new MealEntry(1, 10, 'breakfast', 'Monday');
+    const result = calendarService.editMealInCalendar(100, 999, updated);
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe('Meal entry not found');
+  });
+});

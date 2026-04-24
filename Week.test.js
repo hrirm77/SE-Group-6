@@ -53,3 +53,37 @@ describe('UC10: Week model tests', () => {
     }).toThrow('removeMeal: no entry found with id 999');
   });
 });
+
+describe('UC11: Week editMeal tests', () => {
+  let week;
+
+  beforeEach(() => {
+    const breakfast = new MealEntry(1, 10, 'breakfast', 'Monday');
+    week = new Week(15, [breakfast]);
+  });
+
+  test('editMeal replaces entry with updated entry', () => {
+    const updated = new MealEntry(1, 99, 'lunch', 'Tuesday');
+
+    week.editMeal(1, updated);
+
+    expect(week.getMealEntries()).toHaveLength(1);
+    expect(week.getMealEntries()[0].getMealId()).toBe(99);
+    expect(week.getMealEntries()[0].getMealType()).toBe('lunch');
+    expect(week.getMealEntries()[0].getDay()).toBe('Tuesday');
+  });
+
+  test('editMeal throws when entry id is not found', () => {
+    const updated = new MealEntry(1, 10, 'breakfast', 'Monday');
+
+    expect(() => {
+      week.editMeal(999, updated);
+    }).toThrow('editMeal: no entry found with id 999');
+  });
+
+  test('editMeal throws on wrong argument type', () => {
+    expect(() => {
+      week.editMeal(1, 'not a MealEntry');
+    }).toThrow('editMeal: argument must be a MealEntry instance');
+  });
+});
