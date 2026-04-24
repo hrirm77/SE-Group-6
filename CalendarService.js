@@ -1,3 +1,10 @@
+/**
+ * Calendar Service 
+ * Handles all calendar-related operations including viewing, adding,
+ * editing, and removing meal entries within a user's calendar.
+ * UC3 + UC12
+ * @author Hrithik + WeiSen + Elyas
+ */
 import MealEntry from './MealEntry.js';
 
 class CalendarService {

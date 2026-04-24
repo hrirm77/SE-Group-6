@@ -1,3 +1,9 @@
+/**
+ * CalendarService Test Suite
+ * Unit tests for validating the functionality of CalendarService.
+ * UC3 + UC12
+ *  * @author Hrithik + WeiSen + Elyas
+ */
 import CalendarService from './CalendarService.js';
 import Calendar from './Calendar.js';
 import Week from './Week.js';
@@ -178,6 +184,53 @@ describe('UC11: CalendarService editMealInCalendar tests', () => {
   test('meal entry not found', () => {
     const updated = new MealEntry(1, 10, 'breakfast', 'Monday');
     const result = calendarService.editMealInCalendar(100, 999, updated);
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe('Meal entry not found');
+  });
+});
+
+describe('UC12: CalendarService removeMealFromCalendar tests', () => {
+  let calendarService;
+
+  beforeEach(() => {
+    const breakfast = new MealEntry(1, 10, 'breakfast', 'Monday');
+    const week15 = new Week(15, [breakfast]);
+    const calendar = new Calendar(100, [week15]);
+
+    calendarService = new CalendarService([calendar], [10, 11, 12, 13, 14]);
+  });
+
+  test('remove meal success', () => {
+    const result = calendarService.removeMealFromCalendar(100, 1);
+
+    expect(result.success).toBe(true);
+    expect(result.message).toBe('Meal entry removed successfully');
+  });
+
+  test('calendar id required', () => {
+    const result = calendarService.removeMealFromCalendar('', 1);
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe('Calendar ID is required');
+  });
+
+  test('entry id required', () => {
+    const result = calendarService.removeMealFromCalendar(100, '');
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe('Meal entry ID is required');
+  });
+
+  test('calendar not found', () => {
+    const result = calendarService.removeMealFromCalendar(999, 1);
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe('Calendar not found');
+  });
+
+  test('meal entry not found', () => {
+    const result = calendarService.removeMealFromCalendar(100, 999);
 
     expect(result.success).toBe(false);
     expect(result.message).toBe('Meal entry not found');
