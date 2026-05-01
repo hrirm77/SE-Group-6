@@ -1,7 +1,7 @@
 // ResetPasswordService.js - UC7: Reset Password
 // Handles both steps: (1) request reset link, (2) submit new password
 
-const PasswordUtils = require("./PasswordUtils");
+import PasswordUtils from "./PasswordUtils.js";
 
 const TOKEN_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
 
@@ -124,4 +124,4 @@ class ResetPasswordService {
   }
 }
 
-module.exports = ResetPasswordService;
+export default ResetPasswordService;
