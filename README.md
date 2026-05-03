@@ -1,15 +1,25 @@
 # SE Group 6 - Meal Planner App
 
-This project is a meal planner web application built using JavaScript, React, Node.js, Express, Jest, and MongoDB.
+This project is a meal planner web application built using JavaScript
 
-## Technologies Used
+### Technologies Used
 - JavaScript Language
 - React Frontend
 - Node.js + Express Backend
 - MongoDB Database
 - Jest Testing Framework
 
-## Environment Setup
+### Important Use Cases
+- UC5: Login 
+- UC9: Logout
+- UC3: Opening Calendar
+- UC10: Add meal to calendar 
+- UC27: Set nutrition goals - Ivan, Simon, Michael
+- UC7: Reset password - Advaith
+- UC12: Remove meal from calendar - Hrithik, Elyas, WeiSen
+
+
+# Environment Setup
 MongoDB Community Server should be installed locally and run as a Windows service.
 
 MongoDB Compass GUI is optional.
