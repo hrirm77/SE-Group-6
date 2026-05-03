@@ -14,9 +14,9 @@ This project is a meal planner web application built using JavaScript
 - UC9: Logout
 - UC3: Opening Calendar
 - UC10: Add meal to calendar 
-- UC27: Set nutrition goals - Ivan, Simon, Michael
-- UC7: Reset password - Advaith
-- UC12: Remove meal from calendar - Hrithik, Elyas, WeiSen
+- UC27: Set nutrition goals
+- UC7: Reset password
+- UC12: Remove meal from calendar
 
 
 # Environment Setup
