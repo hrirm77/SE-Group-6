@@ -17,7 +17,7 @@ This project is a meal planner web application built using JavaScript
 - UC27: Set nutrition goals
 - UC7: Reset password
 - UC12: Remove meal from calendar
-
+- UC11: Edit Scheduled Meal
 
 # Environment Setup
 MongoDB Community Server should be installed locally and run as a Windows service.
