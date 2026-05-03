@@ -33,6 +33,40 @@ const normalizeItems = (items = []) =>
     }))
     .filter((item) => item.name);
 
+const formatMealDate = (day) => {
+  if (!day) {
+    return null;
+  }
+
+  const date = new Date(day);
+
+  if (Number.isNaN(date.getTime())) {
+    return String(day).trim() || null;
+  }
+
+  return date.toLocaleDateString("en-US", { timeZone: "UTC" });
+};
+
+const getDefaultTitle = (meals) => {
+  const dates = [
+    ...new Set(
+      meals
+        .map((meal) => formatMealDate(meal.day))
+        .filter(Boolean)
+    ),
+  ];
+
+  if (!dates.length) {
+    return "Grocery List";
+  }
+
+  if (dates.length === 1) {
+    return `Grocery List for ${dates[0]}`;
+  }
+
+  return `Grocery List for ${dates[0]} - ${dates[dates.length - 1]}`;
+};
+
 // @desc    Get grocery lists
 // @route   GET /api/grocery-lists
 // @access  Private
@@ -49,7 +83,10 @@ const getGroceryLists = asyncHandler(async (req, res) => {
 // @access  Private
 const generateGroceryList = asyncHandler(async (req, res) => {
   const meals = await Meal.find({ user: req.user.id });
-  const items = meals.flatMap((meal) =>
+  const mealsWithIngredients = meals.filter((meal) =>
+    String(meal.ingredients || "").trim()
+  );
+  const items = mealsWithIngredients.flatMap((meal) =>
     String(meal.ingredients || "")
       .split(/\r?\n/)
       .map(parseIngredientLine)
@@ -63,7 +100,7 @@ const generateGroceryList = asyncHandler(async (req, res) => {
 
   const title =
     String(req.body.title || "").trim() ||
-    `Grocery List ${new Date().toLocaleDateString("en-US")}`;
+    getDefaultTitle(mealsWithIngredients);
 
   const list = await GroceryList.create({
     user: req.user.id,
