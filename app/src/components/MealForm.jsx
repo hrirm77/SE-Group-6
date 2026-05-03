@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { updateMeal, createMeal } from '../features/meals/mealSlice'
+import { updateMeal, createMeal, deleteMeal } from '../features/meals/mealSlice'
 import { FaTimes, FaChevronCircleDown, FaChevronCircleUp } from 'react-icons/fa'
 
 
@@ -38,6 +38,20 @@ function MealForm({ meals, mealData, setMealData, currId, showForm, toggleForm, 
             dispatch(createMeal(mealData))
         }
 
+        toggleForm()
+    }
+
+    const onDelete = () => {
+        if (currId !== 0) {
+            dispatch(deleteMeal(currId))
+            toggleForm()
+        }
+    }
+
+    const onDuplicate = () => {
+        let mealCopy = { ...mealData }
+        mealCopy.name = mealCopy.name + " (Copy)"
+        dispatch(createMeal(mealCopy))
         toggleForm()
     }
 
@@ -173,8 +187,14 @@ function MealForm({ meals, mealData, setMealData, currId, showForm, toggleForm, 
                                 </div>
                             </div>
                         }
-                        <div className="form-group">
-                            <button className="btn btn-block" type="submit">Submit</button>
+                        <div className="form-group" style={{ display: 'flex', gap: '10px' }}>
+                            <button className="btn btn-block" type="submit" style={{ flex: 1 }}>Save</button>
+                            {currId !== 0 && (
+                                <>
+                                    <button className="btn btn-block" type="button" onClick={onDuplicate} style={{ flex: 1, backgroundColor: '#17a2b8' }}>Duplicate</button>
+                                    <button className="btn btn-block" type="button" onClick={onDelete} style={{ flex: 1, backgroundColor: '#dc3545' }}>Delete</button>
+                                </>
+                            )}
                         </div>
                     </form>              
                     <button className="close-popup" onClick={toggleForm}>
