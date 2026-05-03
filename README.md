@@ -1,36 +1,41 @@
-# Phase 4 Project
+# SE Group 6 - Meal Planner App
 
-### Language and Test Environment
-- Language: JavaScript (ES Modules)
-- Test Framework: Jest
-- Runtime: Node.js
+This project is a meal planner web application built using JavaScript, React, Node.js, Express, Jest, and MongoDB.
 
-### Implemented Use Cases
-- UC5: Login
-- UC9: Logout
-- UC3: Opening Calendar
-- UC10: Add Meal to Calendar
+JavaScript Language
+React Frontend
+Node.js + Express Backend
+MongoDB Database
+JEST Testing Framework
 
-### Files
-- Calendar.js
-- Week.js
-- Meal.js
-- MealEntry.js
-- Session.js
-- User.js
-- AuthService.js
-- CalendarService.js
+# Environment Setup
+MongoDB Community Server should be installed locally and run as a Windows service.
+  MongoDB Compass GUI is optional.
 
-### Test Files
-- AuthService.test.js
-- CalendarService.test.js
-- Calendar.test.js
-- Week.test.js
-- Meal.test.js
-- MealEntry.test.js
-- Session.test.js
-- User.test.js
+cd SE-Group-6-main\app\meal_planner-api
+create .env file 
+  PORT=5000
+  MONGO_URI=mongodb://127.0.0.1:27017/mealplanner
+  JWT_SECRET=secret123
+cd SE-Group-6-main\app
+create .env file
+  REACT_APP_API_URL=http://localhost:5000
 
-### Run tests
-1. npm install
-2. npm test
+# Run Backend
+
+cd SE-Group-6-main\app\meal_planner-api
+npm install
+npm start
+
+# Run Frontend
+cd SE-Group-6-main\app
+npm install
+npm pkg set proxy=http://localhost:5000
+npm start
+
+The app will open in the default browser at http://localhost:3000
+
+# Run Test Cases
+cd SE-Group-6-main
+npm install
+npm test
