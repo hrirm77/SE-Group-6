@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { deleteMeal } from '../features/meals/mealSlice'
-import { FaEdit, FaTimes } from 'react-icons/fa'
+import { deleteMeal, createMeal } from '../features/meals/mealSlice'
+import { FaEdit, FaTimes, FaCopy } from 'react-icons/fa'
 import { v4 as uuidv4 } from 'uuid'
 
 const MealItem = ({ meal, onEdit  }) => {
@@ -27,14 +27,26 @@ const MealItem = ({ meal, onEdit  }) => {
           <h4>{meal.day}</h4>
           <div className="btn-wrapper">
             <button 
+              onClick={() => {
+                const { _id, createdAt, updatedAt, __v, ...mealCopy } = meal;
+                mealCopy.name = mealCopy.name + " (Copy)";
+                dispatch(createMeal(mealCopy));
+              }}
+              className="duplicate"
+              title="Duplicate Meal">
+                <FaCopy size={'20px'} />
+              </button>
+            <button 
               onClick={() => {onEdit(meal)}}
-              className="edit">
-                <FaEdit size={'24px'} />
+              className="edit"
+              title="Edit Meal">
+                <FaEdit size={'20px'} />
               </button>
             <button 
               onClick={() => dispatch(deleteMeal(meal._id))} 
-              className="close">
-              <FaTimes size={'24px'} />
+              className="close"
+              title="Delete Meal">
+              <FaTimes size={'20px'} />
           </button>
           </div>
         </div>

@@ -24,7 +24,8 @@ function NutritionGoals() {
     const fetchMe = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const res = await axios.get('/api/users/me', config);
+        const API_URL = process.env.REACT_APP_API_URL || '';
+        const res = await axios.get(`${API_URL}/api/users/me`, config);
         if (res.data.nutritionGoals) {
           setGoals({
             calorieGoal: res.data.nutritionGoals.calorieGoal || '',
@@ -51,7 +52,8 @@ function NutritionGoals() {
     e.preventDefault();
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post('/api/users/nutrition', {
+      const API_URL = process.env.REACT_APP_API_URL || '';
+      await axios.post(`${API_URL}/api/users/nutrition`, {
         calorieGoal: Number(goals.calorieGoal),
         protein: Number(goals.protein),
         carbs: Number(goals.carbs),
@@ -60,6 +62,18 @@ function NutritionGoals() {
       toast.success('Nutrition goals saved!');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to save goals');
+    }
+  };
+
+  const onClear = async () => {
+    try {
+      const config = { headers: { Authorization: `Bearer ${user.token}` } };
+      const API_URL = process.env.REACT_APP_API_URL || '';
+      await axios.delete(`${API_URL}/api/users/nutrition`, config);
+      setGoals({ calorieGoal: '', protein: '', carbs: '', fat: '' });
+      toast.success('Nutrition goals cleared!');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to clear goals');
     }
   };
 
@@ -84,8 +98,9 @@ function NutritionGoals() {
           <label>Fat (g)</label>
           <input type="number" className="form-control" name="fat" value={goals.fat} onChange={onChange} required min="0" />
         </div>
-        <div className="form-group">
-          <button className="btn btn-block">Save Goals</button>
+        <div className="form-group" style={{display: 'flex', gap: '10px'}}>
+          <button className="btn btn-block" type="submit" style={{flex: 1}}>Save Goals</button>
+          <button className="btn btn-block" type="button" onClick={onClear} style={{flex: 1, backgroundColor: '#dc3545'}}>Clear Goals</button>
         </div>
       </form>
     </section>

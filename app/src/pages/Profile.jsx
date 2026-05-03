@@ -1,105 +1,120 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 import Spinner from '../components/Spinner'
-import { getMeals, reset } from '../features/meals/mealSlice'
-import { FaTimes } from 'react-icons/fa'
 
 function Profile() {
-
-    const [popup, setPopup] = useState(false)
-    const [text, setText] = useState('')
-
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-
     const { user } = useSelector((state) => state.auth)
-    const { meals, isLoading, isError, message } = useSelector((state) => state.meals)
 
-    const firstLet = user.name[0]
+    const [weight, setWeight] = useState('')
+    const [diet, setDiet] = useState('')
+    const [dietList, setDietList] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-      if (isError) {
-        console.log(message);
-      }
-  
       if (!user) {
         navigate('/login')
-      }
-  
-      dispatch(getMeals())
-  
-      return () => {
-        dispatch(reset())
+        return
       }
       
-    },[user, navigate, isError, message, dispatch])
+      const fetchProfile = async () => {
+        try {
+          const config = { headers: { Authorization: `Bearer ${user.token}` } };
+          const API_URL = process.env.REACT_APP_API_URL || '';
+          const res = await axios.get(`${API_URL}/api/users/me`, config);
+          if (res.data.weight) setWeight(res.data.weight);
+          if (res.data.dietaryPreferences) setDietList(res.data.dietaryPreferences);
+        } catch (error) {
+          toast.error('Failed to load profile');
+        } finally {
+          setLoading(false);
+        }
+      }
+      fetchProfile();
+    }, [user, navigate])
 
-    const togglePopup = () => {
-      setPopup(!popup)
-      console.log(popup)
+    const handleSaveProfile = async (e) => {
+      e.preventDefault();
+      try {
+        const config = { headers: { Authorization: `Bearer ${user.token}` } };
+        const API_URL = process.env.REACT_APP_API_URL || '';
+        await axios.put(`${API_URL}/api/users/profile`, { weight: Number(weight), dietaryPreferences: dietList }, config);
+        toast.success('Profile updated successfully!');
+      } catch (error) {
+        toast.error('Failed to update profile');
+      }
     }
 
-    const onSubmit = () => {
-      console.log(text);
+    const addDiet = () => {
+      if (diet && !dietList.includes(diet)) {
+        setDietList([...dietList, diet]);
+        setDiet('');
+      }
     }
 
-    if (isLoading) {
-        return <Spinner />
+    const removeDiet = (item) => {
+      setDietList(dietList.filter(d => d !== item));
     }
+
+    if (loading) return <Spinner />
 
   return (
-    <div className='grid'>
-        <div className="box box-1">
-          {meals.map(meal => (
-            <div className="row" key={meal._id}>
-              <div className="row-header">
-                <h4>{meal.dishType}</h4>
-              </div>
-              <div className="row-content">
-                <h2>{meal.name}</h2>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="box box-2">
-          <div className="box-2-header">
+    <div className='grid' style={{display: 'flex', justifyContent: 'center', marginTop: '40px'}}>
+        <div className="box box-2" style={{width: '100%', maxWidth: '600px'}}>
+          <div className="box-2-header" style={{display: 'flex', alignItems: 'center', gap: '20px'}}>
             <div className="circle">
-              <h1>{user && firstLet}</h1>
+              <h1>{user?.name?.[0]?.toUpperCase()}</h1>
+            </div>
+            <div>
+              <h2 style={{color: 'white'}}>{user?.name}</h2>
+              <p style={{color: '#aaa'}}>{user?.email}</p>
             </div>
           </div>
-          <div className="box-2-content">
-            <p>Joined: 28.3.2022</p>
-          </div>
-        </div>
-        <div className="box box-3">
-          <button className="btn btn-block popup-btn" onClick={togglePopup}>Add To Shopping</button>
+          
+          <div className="box-2-content" style={{marginTop: '30px', textAlign: 'left'}}>
+            <h3>Update Profile</h3>
+            <form onSubmit={handleSaveProfile} style={{marginTop: '15px'}}>
+              <div className="form-group">
+                <label>Current Weight (lbs)</label>
+                <input 
+                  type="number" 
+                  className="form-control" 
+                  value={weight} 
+                  onChange={(e) => setWeight(e.target.value)} 
+                  placeholder="e.g. 150"
+                />
+              </div>
 
-          {popup && <div className="popup">
-                <div onClick={togglePopup} className="overlay"></div>
-                <div className="popup-content">
-                    <form onSubmit={onSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="item">Item</label>
-                            <input 
-                                type="text" 
-                                name="item"
-                                id="item"
-                                value={text}
-                                onChange={(e) => setText(e.target.value)}
-                                autoComplete="off" 
-                            />
-                        </div>
-                        <div className="form-group">
-                            <button className="btn btn-block" type="submit">Submit</button>
-                        </div>
-                    </form>              
-                    <button className="close-popup" onClick={togglePopup}>
-                        <FaTimes />
-                    </button>
+              <div className="form-group">
+                <label>Dietary Preferences (e.g. Vegan, Keto)</label>
+                <div style={{display: 'flex', gap: '10px', marginBottom: '10px'}}>
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    value={diet} 
+                    onChange={(e) => setDiet(e.target.value)} 
+                    placeholder="Add a preference..."
+                  />
+                  <button type="button" className="btn" onClick={addDiet}>Add</button>
                 </div>
-            </div>
-        }
+                {dietList.length > 0 && (
+                  <ul style={{listStyle: 'none', padding: 0, display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
+                    {dietList.map((item, index) => (
+                      <li key={index} style={{background: '#007BFF', color: 'white', padding: '5px 15px', borderRadius: '20px', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '10px'}}>
+                        {item} 
+                        <span style={{cursor: 'pointer', fontWeight: 'bold'}} onClick={() => removeDiet(item)}>x</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <button className="btn btn-block" type="submit" style={{marginTop: '20px'}}>Save Profile</button>
+            </form>
+          </div>
         </div>
     </div>
   )

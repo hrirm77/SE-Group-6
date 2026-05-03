@@ -11,7 +11,8 @@ function ResetPassword() {
   const handleRequestReset = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/api/users/reset-password', { email });
+      const API_URL = process.env.REACT_APP_API_URL || '';
+      const res = await axios.post(`${API_URL}/api/users/reset-password`, { email });
       toast.success(res.data.message);
       if (res.data.token) {
         toast.info(`Test Token (Normally Emailed): ${res.data.token}`, { autoClose: false });
@@ -25,7 +26,8 @@ function ResetPassword() {
   const handleResetSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`/api/users/reset-password/${token}`, { password });
+      const API_URL = process.env.REACT_APP_API_URL || '';
+      const res = await axios.post(`${API_URL}/api/users/reset-password/${token}`, { password });
       toast.success(res.data.message);
       setStep(1);
       setEmail('');

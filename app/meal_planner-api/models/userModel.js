@@ -26,6 +26,13 @@ const userSchema = mongoose.Schema(
     },
     resetTokenExpiry: {
       type: Date
+    },
+    weight: {
+      type: Number
+    },
+    dietaryPreferences: {
+      type: [String],
+      default: []
     }
   },
   {

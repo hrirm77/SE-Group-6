@@ -105,6 +105,44 @@ const setNutritionGoals = asyncHandler(async (req, res) => {
   res.status(200).json(user.nutritionGoals);
 });
 
+// @desc    Clear Nutrition Goals
+// @route   DELETE /api/users/nutrition
+// @access  Private
+const clearNutritionGoals = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  user.nutritionGoals = undefined;
+  await user.save();
+
+  res.status(200).json({ message: "Nutrition goals cleared" });
+});
+
+// @desc    Update User Profile (Weight, Diet)
+// @route   PUT /api/users/profile
+// @access  Private
+const updateProfile = asyncHandler(async (req, res) => {
+  const { weight, dietaryPreferences } = req.body;
+  const user = await User.findById(req.user.id);
+  
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  if (weight !== undefined) user.weight = weight;
+  if (dietaryPreferences !== undefined) user.dietaryPreferences = dietaryPreferences;
+
+  await user.save();
+  res.status(200).json({
+    weight: user.weight,
+    dietaryPreferences: user.dietaryPreferences
+  });
+});
+
 // @desc    Request Password Reset
 // @route   POST /api/users/reset-password
 // @access  Public
@@ -176,6 +214,8 @@ module.exports = {
   loginUser,
   getMe,
   setNutritionGoals,
+  clearNutritionGoals,
+  updateProfile,
   requestPasswordReset,
   resetPassword
 };

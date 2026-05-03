@@ -50,11 +50,11 @@ function Header() {
                   Nutrition Goals
                 </Link>
               </li>
-              {/* <li>
-                <Link to='/profile'>
+              <li>
+                <Link to='/profile' onClick={goTop}>
                   Profile
                 </Link>
-              </li> */}
+              </li>
               <li>
                 <div className='logout-btn' onClick={onLogout}>
                 Logout
@@ -102,11 +102,11 @@ function Header() {
                       Nutrition Goals
                     </Link>
                   </li>
-                  {/* <li>
-                    <Link to='/profile'>
+                  <li>
+                    <Link to='/profile' onClick={toggleNav}>
                       Profile
                     </Link>
-                  </li> */}
+                  </li>
                   <li>
                     <div className='logout-btn' onClick={onLogout}>
                     Logout
