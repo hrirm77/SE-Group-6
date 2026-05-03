@@ -2,40 +2,66 @@
 
 This project is a meal planner web application built using JavaScript, React, Node.js, Express, Jest, and MongoDB.
 
-JavaScript Language
-React Frontend
-Node.js + Express Backend
-MongoDB Database
-JEST Testing Framework
+## Technologies Used
+- JavaScript Language
+- React Frontend
+- Node.js + Express Backend
+- MongoDB Database
+- Jest Testing Framework
 
-# Environment Setup
+## Environment Setup
 MongoDB Community Server should be installed locally and run as a Windows service.
-  MongoDB Compass GUI is optional.
 
+MongoDB Compass GUI is optional.
+
+### Backend `.env` File
+
+```powershell
 cd SE-Group-6-main\app\meal_planner-api
-create .env file 
-  PORT=5000
-  MONGO_URI=mongodb://127.0.0.1:27017/mealplanner
-  JWT_SECRET=secret123
+```
+Create a `.env` file with:
+```env
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/mealplanner
+JWT_SECRET=secret123
+```
+
+### Frontend `.env` File
+
+```powershell
 cd SE-Group-6-main\app
-create .env file
-  REACT_APP_API_URL=http://localhost:5000
+```
+
+Create a `.env` file with:
+```env
+REACT_APP_API_URL=http://localhost:5000
+```
 
 # Run Backend
 
+```powershell
 cd SE-Group-6-main\app\meal_planner-api
 npm install
 npm start
+```
 
 # Run Frontend
+In a seperate terminal
+```powershell
 cd SE-Group-6-main\app
 npm install
 npm pkg set proxy=http://localhost:5000
 npm start
+```
 
-The app will open in the default browser at http://localhost:3000
+The app will open in the default browser at 
+```text
+http://localhost:3000
+```
 
 # Run Test Cases
+```powershell
 cd SE-Group-6-main
 npm install
 npm test
+```
