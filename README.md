@@ -25,6 +25,7 @@ This project is a meal planner web application built using JavaScript
 
 # Environment Setup
 MongoDB Community Server should be installed locally and run as a Windows service.
+- https://www.mongodb.com/try/download/community-kubernetes-operator
 
 MongoDB Compass GUI is optional.
 
