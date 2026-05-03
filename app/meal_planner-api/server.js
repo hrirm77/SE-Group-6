@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/meals", require("./routes/mealRoutes"));
+app.use("/api/grocery-lists", require("./routes/groceryListRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 
 app.use(errorHandler);

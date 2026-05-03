@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import NutritionGoals from "./pages/NutritionGoals";
 import ResetPassword from "./pages/ResetPassword";
+import GroceryLists from "./pages/GroceryLists";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/Register" element={<Register />} />
               <Route path="/Profile" element={<Profile />} />
               <Route path="/NutritionGoals" element={<NutritionGoals />} />
+              <Route path="/GroceryLists" element={<GroceryLists />} />
               <Route path="/ResetPassword" element={<ResetPassword />} />
             </Routes>
           </div>

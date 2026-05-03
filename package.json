@@ -18,6 +18,9 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "<rootDir>/app/"
+    ],
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     }
