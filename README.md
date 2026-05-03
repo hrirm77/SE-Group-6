@@ -18,6 +18,10 @@ This project is a meal planner web application built using JavaScript
 - UC7: Reset password
 - UC12: Remove meal from calendar
 - UC11: Edit Scheduled Meal
+- UC23: Generate grocery list
+- UC24: Edit grocery list
+- UC25: Export grocery list
+- UC26: Delete list
 
 # Environment Setup
 MongoDB Community Server should be installed locally and run as a Windows service.

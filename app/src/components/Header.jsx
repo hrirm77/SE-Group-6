@@ -51,6 +51,11 @@ function Header() {
                 </Link>
               </li>
               <li>
+                <Link to='/GroceryLists' onClick={goTop}>
+                  Grocery Lists
+                </Link>
+              </li>
+              <li>
                 <Link to='/profile' onClick={goTop}>
                   Profile
                 </Link>
@@ -100,6 +105,11 @@ function Header() {
                   <li>
                     <Link to='/NutritionGoals' onClick={toggleNav}>
                       Nutrition Goals
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to='/GroceryLists' onClick={toggleNav}>
+                      Grocery Lists
                     </Link>
                   </li>
                   <li>
