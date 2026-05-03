@@ -5,13 +5,30 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 
-const emptyItem = { name: "", quantity: "", checked: false };
+let nextClientItemId = 1;
+
+const createClientId = () => `grocery-item-${nextClientItemId++}`;
+
+const createEmptyItem = () => ({
+  name: "",
+  quantity: "",
+  checked: false,
+  clientId: createClientId(),
+});
+
+const prepareItemsForEditor = (listItems = []) =>
+  listItems.length
+    ? listItems.map((item) => ({ ...item, clientId: createClientId() }))
+    : [createEmptyItem()];
+
+const prepareItemsForApi = (listItems) =>
+  listItems.map(({ clientId, ...item }) => item);
 
 function GroceryLists() {
   const [lists, setLists] = useState([]);
   const [selectedId, setSelectedId] = useState("");
   const [title, setTitle] = useState("Grocery List");
-  const [items, setItems] = useState([{ ...emptyItem }]);
+  const [items, setItems] = useState([createEmptyItem()]);
   const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
@@ -55,7 +72,7 @@ function GroceryLists() {
   const selectList = (list) => {
     setSelectedId(list._id);
     setTitle(list.title);
-    setItems(list.items.length ? list.items : [{ ...emptyItem }]);
+    setItems(prepareItemsForEditor(list.items));
   };
 
   const updateItem = (index, field, value) => {
@@ -67,13 +84,13 @@ function GroceryLists() {
   };
 
   const addItem = () => {
-    setItems((prevItems) => [...prevItems, { ...emptyItem }]);
+    setItems((prevItems) => [...prevItems, createEmptyItem()]);
   };
 
   const removeItem = (index) => {
     setItems((prevItems) => {
       const nextItems = prevItems.filter((_, itemIndex) => itemIndex !== index);
-      return nextItems.length ? nextItems : [{ ...emptyItem }];
+      return nextItems.length ? nextItems : [createEmptyItem()];
     });
   };
 
@@ -106,7 +123,7 @@ function GroceryLists() {
     try {
       const response = await axios.patch(
         `${API_URL}/api/grocery-lists/${selectedId}`,
-        { title, items },
+        { title, items: prepareItemsForApi(items) },
         config
       );
       setLists((prevLists) =>
@@ -160,7 +177,7 @@ function GroceryLists() {
       } else {
         setSelectedId("");
         setTitle("Grocery List");
-        setItems([{ ...emptyItem }]);
+        setItems([createEmptyItem()]);
       }
       toast.success("Grocery list deleted");
     } catch (error) {
@@ -218,7 +235,7 @@ function GroceryLists() {
 
           <div className="grocery-items">
             {items.map((item, index) => (
-              <div className="grocery-item-row" key={`${item.name}-${index}`}>
+              <div className="grocery-item-row" key={item.clientId}>
                 <input
                   aria-label="Purchased"
                   type="checkbox"
